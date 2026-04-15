@@ -117,7 +117,7 @@ jobs:
               -pedantic
             )
             CFLAGS="${compile_flags[*]} -std=c99"
-            CXXFLAGS="${compile_flags[*]} -std=c++98"
+            CXXFLAGS="${compile_flags[*]} -std=c++11"
             LDFLAGS='-g ${{ matrix.ldflags }}'
             cmake_args=(
               -DCMAKE_INSTALL_PREFIX:PATH=${GTEST_PREFIX}
