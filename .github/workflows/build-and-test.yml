@@ -90,8 +90,8 @@ jobs:
           (
             cd googletest-release-${GTEST_VERSION}/
 
-            # Silence warning "Compatibility with CMake < 2.8.12 will be removed"
-            find -name CMakeLists.txt -print -exec sed 's/cmake_minimum_required.*/cmake_minimum_required(VERSION 3.5.0)/' -i {} \;
+            # Silence warning "Compatibility with CMake < 3.10 will be removed"
+            find -name CMakeLists.txt -print -exec sed 's/cmake_minimum_required.*/cmake_minimum_required(VERSION 3.10.0)/' -i {} \;
 
             cmake \
                 -DBUILD_SHARED_LIBS=ON \
