@@ -95,10 +95,10 @@ if(URIPARSER_BUILD_TESTS OR URIPARSER_BUILD_FUZZERS)
     if(URIPARSER_BUILD_FUZZERS)
         set(CMAKE_CXX_STANDARD 17)
     else()
-        set(CMAKE_CXX_STANDARD 98)
+        set(CMAKE_CXX_STANDARD 11)
     endif()
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)  # i.e. -std=c++98 rather than default -std=gnu++98
+    set(CMAKE_CXX_EXTENSIONS OFF)  # i.e. -std=c++11 rather than default -std=gnu++11
 endif()
 
 if(URIPARSER_SHARED_LIBS)
