@@ -91,6 +91,14 @@ endif()
 if(URIPARSER_BUILD_TESTS OR URIPARSER_BUILD_FUZZERS)
     # We have to call enable_language() before modifying any CMAKE_CXX_* variables
     enable_language(CXX)
+
+    if(URIPARSER_BUILD_FUZZERS)
+        set(CMAKE_CXX_STANDARD 17)
+    else()
+        set(CMAKE_CXX_STANDARD 98)
+    endif()
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_CXX_EXTENSIONS OFF)  # i.e. -std=c++98 rather than default -std=gnu++98
 endif()
 
 if(URIPARSER_SHARED_LIBS)
