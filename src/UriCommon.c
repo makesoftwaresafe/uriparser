@@ -66,6 +66,7 @@
 #  endif
 
 #  include <assert.h>
+#  include <stddef.h>
 
 /*extern*/ const URI_CHAR * const URI_FUNC(SafeToPointTo) = _UT("X");
 /*extern*/ const URI_CHAR * const URI_FUNC(ConstPwd) = _UT(".");
@@ -106,6 +107,8 @@ int URI_FUNC(FreeUriPath)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
 /* Compares two text ranges for equal text content */
 int URI_FUNC(CompareRange)(const URI_TYPE(TextRange) * a, const URI_TYPE(TextRange) * b) {
     int diff;
+    ptrdiff_t lenA;
+    ptrdiff_t lenB;
 
     /* NOTE: Both NULL means equal! */
     if ((a == NULL) || (b == NULL)) {
@@ -117,14 +120,16 @@ int URI_FUNC(CompareRange)(const URI_TYPE(TextRange) * a, const URI_TYPE(TextRan
         return ((a->first == NULL) ? 0 : 1) - ((b->first == NULL) ? 0 : 1);
     }
 
-    diff = ((int)(a->afterLast - a->first) - (int)(b->afterLast - b->first));
-    if (diff > 0) {
+    lenA = a->afterLast - a->first;
+    lenB = b->afterLast - b->first;
+
+    if (lenA > lenB) {
         return 1;
-    } else if (diff < 0) {
+    } else if (lenA < lenB) {
         return -1;
     }
 
-    diff = URI_STRNCMP(a->first, b->first, (a->afterLast - a->first));
+    diff = URI_STRNCMP(a->first, b->first, (size_t)lenA);
 
     if (diff > 0) {
         return 1;
