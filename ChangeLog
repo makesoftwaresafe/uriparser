@@ -2,6 +2,21 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
+XXXX-XX-XX -- 1.0.1
+
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Fixed: [CVE-2026-42371]
+      Protect from integer overflow in text range comparison.
+      Thanks for the report and pull request to Joshua W. Windle! (GitHub #298)
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Fixed: Fix `reallocarray` preprocessor handling for Illumos (GitHub #289)
+  * Improved: Fix an in-code comment typo in src/UriCommon.c;
+      Thanks for the report and pull request to Tim Düsterhus! (GitHub #290)
+  * Improved: CMake: Start enforcing supported C++ standard (GitHub #295)
+  * Improved: Allow use of C++11 to future unit tests (GitHub #296)
+  * Infrastructure: Cover compilation with Visual Studio 18 2026 (GitHub #301)
+  * Infrastructure: Address warning on CMake <3.10 in CI (GitHub #297)
+
 2025-12-15 -- 1.0.0
 
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
