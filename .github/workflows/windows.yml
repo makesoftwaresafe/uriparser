@@ -21,14 +21,29 @@ jobs:
       matrix:
         include:
           # Visual Studio 2022, 32 bit
-          - runs-on: windows-2025
+          - runs-on: windows-2022
             cmake_generator: Visual Studio 17 2022
             common_cmake_args: -A Win32
+            uriparser_sln: uriparser.sln
 
           # Visual Studio 2022, 64 bit
-          - runs-on: windows-2025
+          - runs-on: windows-2022
             cmake_generator: Visual Studio 17 2022
             common_cmake_args: -A x64
+            uriparser_sln: uriparser.sln
+
+          # Visual Studio 2026, 32 bit
+          - runs-on: windows-2025-vs2026
+            cmake_generator: Visual Studio 18 2026
+            common_cmake_args: -A Win32
+            uriparser_sln: uriparser.slnx
+
+          # Visual Studio 2026, 64 bit
+          - runs-on: windows-2025-vs2026
+            cmake_generator: Visual Studio 18 2026
+            common_cmake_args: -A x64
+            uriparser_sln: uriparser.slnx
+
     runs-on: ${{ matrix.runs-on }}
     defaults:
       run:
@@ -78,6 +93,8 @@ jobs:
         cmake "${cmake_args[@]}"
 
     - name: Build
+      env:
+        uriparser_sln: ${{ matrix.uriparser_sln }}
       run: |-
         msbuild_args=(
           -m
@@ -85,7 +102,7 @@ jobs:
         )
         set -x
         cd build
-        MSBuild.exe "${msbuild_args[@]}" uriparser.sln
+        MSBuild.exe "${msbuild_args[@]}" "${uriparser_sln}"
 
     - name: Run tests
       run: |-
