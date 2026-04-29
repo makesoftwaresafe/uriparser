@@ -30,7 +30,7 @@
 #endif
 
 extern "C" {
-int uriCompareRangeA(const UriTextRangeA * a, const UriTextRangeA * b);
+bool uriRangeEqualsA(const UriTextRangeA * a, const UriTextRangeA * b);
 }
 
 #if !defined(_WIN32) && (UINTPTR_MAX > UINT32_MAX)
@@ -87,9 +87,9 @@ TEST(UriSuite, TestRangeComparisonDoesNotWrapLengthChecksOn64Bit) {
     shortRange.first = shortStart;
     shortRange.afterLast = shortStart + shortLen;
 
-    const int comparison = uriCompareRangeA(&hugeRange, &shortRange);
+    const bool comparison = uriRangeEqualsA(&hugeRange, &shortRange);
 
-    EXPECT_EQ(1, comparison);
+    EXPECT_EQ(false, comparison);
 
     EXPECT_EQ(0, munmap(hugeBase, hugeMapLen));
     EXPECT_EQ(0, munmap(shortBase, shortMapLen));

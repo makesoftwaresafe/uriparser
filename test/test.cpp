@@ -32,7 +32,7 @@ using namespace std;
 extern "C" {
 UriBool uri_TESTING_ONLY_ParseIpSixA(const char * text);
 UriBool uri_TESTING_ONLY_ParseIpFourA(const char * text);
-int uriCompareRangeA(const UriTextRangeA * a, const UriTextRangeA * b);
+bool uriRangeEqualsA(const UriTextRangeA * a, const UriTextRangeA * b);
 }
 
 #define URI_TEST_IP_FOUR_FAIL(x) ASSERT_EQ(URI_FALSE, uri_TESTING_ONLY_ParseIpFourA(x))
@@ -2167,8 +2167,8 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 }
 
 namespace {
-void testCompareRangeHelper(const char * a, const char * b, int expected,
-                            bool avoidNullRange = true) {
+void testRangeEqualsHelper(const char * a, const char * b, bool expected,
+                           bool avoidNullRange = true) {
     UriTextRangeA ra;
     UriTextRangeA rb;
 
@@ -2188,40 +2188,40 @@ void testCompareRangeHelper(const char * a, const char * b, int expected,
         rb.afterLast = NULL;
     }
 
-    const int received = uriCompareRangeA(((a == NULL) && avoidNullRange) ? NULL : &ra,
+    const bool received = uriRangeEqualsA(((a == NULL) && avoidNullRange) ? NULL : &ra,
                                           ((b == NULL) && avoidNullRange) ? NULL : &rb);
     if (received != expected) {
-        printf("Comparing <%s> to <%s> yields %d, expected %d.\n", a, b, received,
-               expected);
+        printf("Comparing <%s> to <%s> yields %d, expected %d.\n", a, b, (int)received,
+               (int)expected);
     }
     ASSERT_EQ(received, expected);
 }
 }  // namespace
 
 TEST(UriSuite, TestRangeComparison) {
-    testCompareRangeHelper("", "", 0);
-    testCompareRangeHelper("a", "", 1);
-    testCompareRangeHelper("", "a", -1);
+    testRangeEqualsHelper("", "", true);
+    testRangeEqualsHelper("a", "", false);
+    testRangeEqualsHelper("", "a", false);
 
-    testCompareRangeHelper("a", "a", 0);
-    testCompareRangeHelper("a", "b", -1);
-    testCompareRangeHelper("b", "a", 1);
+    testRangeEqualsHelper("a", "a", true);
+    testRangeEqualsHelper("a", "b", false);
+    testRangeEqualsHelper("b", "a", false);
 
-    testCompareRangeHelper("a", "aa", -1);
-    testCompareRangeHelper("aa", "a", 1);
+    testRangeEqualsHelper("a", "aa", false);
+    testRangeEqualsHelper("aa", "a", false);
 
     // Fixed with 0.8.1:
-    testCompareRangeHelper(NULL, "a", -1);
-    testCompareRangeHelper("a", NULL, 1);
-    testCompareRangeHelper(NULL, NULL, 0);
+    testRangeEqualsHelper(NULL, "a", false);
+    testRangeEqualsHelper("a", NULL, false);
+    testRangeEqualsHelper(NULL, NULL, true);
 
     // Fixed with 0.8.3
     const bool KEEP_NULL_RANGE = false;
     const bool AVOID_NULL_RANGE = true;
-    testCompareRangeHelper(NULL, "", -1, AVOID_NULL_RANGE);
-    testCompareRangeHelper(NULL, "", -1, KEEP_NULL_RANGE);
-    testCompareRangeHelper("", NULL, 1, AVOID_NULL_RANGE);
-    testCompareRangeHelper("", NULL, 1, KEEP_NULL_RANGE);
+    testRangeEqualsHelper(NULL, "", false, AVOID_NULL_RANGE);
+    testRangeEqualsHelper(NULL, "", false, KEEP_NULL_RANGE);
+    testRangeEqualsHelper("", NULL, false, AVOID_NULL_RANGE);
+    testRangeEqualsHelper("", NULL, false, KEEP_NULL_RANGE);
 }
 
 namespace {
