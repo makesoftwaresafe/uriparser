@@ -106,9 +106,6 @@ int URI_FUNC(FreeUriPath)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
 
 /* Compares two text ranges for equal text content */
 bool URI_FUNC(RangeEquals)(const URI_TYPE(TextRange) * a, const URI_TYPE(TextRange) * b) {
-    ptrdiff_t lenA;
-    ptrdiff_t lenB;
-
     /* NOTE: Both NULL means equal! */
     if ((a == NULL) || (b == NULL)) {
         return a == b;
@@ -119,8 +116,8 @@ bool URI_FUNC(RangeEquals)(const URI_TYPE(TextRange) * a, const URI_TYPE(TextRan
         return a->first == b->first;
     }
 
-    lenA = a->afterLast - a->first;
-    lenB = b->afterLast - b->first;
+    const ptrdiff_t lenA = a->afterLast - a->first;
+    const ptrdiff_t lenB = b->afterLast - b->first;
 
     if (lenA != lenB) {
         return false;
