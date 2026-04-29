@@ -105,39 +105,25 @@ int URI_FUNC(FreeUriPath)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
 }
 
 /* Compares two text ranges for equal text content */
-int URI_FUNC(CompareRange)(const URI_TYPE(TextRange) * a, const URI_TYPE(TextRange) * b) {
-    int diff;
-    ptrdiff_t lenA;
-    ptrdiff_t lenB;
-
+bool URI_FUNC(RangeEquals)(const URI_TYPE(TextRange) * a, const URI_TYPE(TextRange) * b) {
     /* NOTE: Both NULL means equal! */
     if ((a == NULL) || (b == NULL)) {
-        return ((a == NULL) ? 0 : 1) - ((b == NULL) ? 0 : 1);
+        return a == b;
     }
 
     /* NOTE: Both NULL means equal! */
     if ((a->first == NULL) || (b->first == NULL)) {
-        return ((a->first == NULL) ? 0 : 1) - ((b->first == NULL) ? 0 : 1);
+        return a->first == b->first;
     }
 
-    lenA = a->afterLast - a->first;
-    lenB = b->afterLast - b->first;
+    const ptrdiff_t lenA = a->afterLast - a->first;
+    const ptrdiff_t lenB = b->afterLast - b->first;
 
-    if (lenA > lenB) {
-        return 1;
-    } else if (lenA < lenB) {
-        return -1;
+    if (lenA != lenB) {
+        return false;
     }
 
-    diff = URI_STRNCMP(a->first, b->first, (size_t)lenA);
-
-    if (diff > 0) {
-        return 1;
-    } else if (diff < 0) {
-        return -1;
-    }
-
-    return diff;
+    return URI_STRNCMP(a->first, b->first, (size_t)lenA) == 0;
 }
 
 UriBool URI_FUNC(CopyRange)(URI_TYPE(TextRange) * destRange,
